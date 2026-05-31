@@ -1,0 +1,12 @@
+.vscode
+.vscode-test
+node_modules
+.gitignore
+.claude/**
+*.vsix
+.marscode/**
+tmp/**
+CLAUDE.md
+readme-dev.md
+docs/
+

@@ -1,0 +1,107 @@
+{
+  "name": "claude-round-files-diff",
+  "displayName": "Claude Round Files Diff",
+  "description": "Track files changed by Claude Code in each round — with one-click diff view inside VS Code",
+  "version": "0.1.0",
+  "publisher": "bbjyzzwwy",
+  "author": "bbjyzzwwy",
+  "icon": "logo.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bbjyzzwwy/Claude_round_files_diff"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "diff",
+    "session",
+    "tracking",
+    "ai",
+    "anthropic"
+  ],
+  "scripts": {
+    "vsix": "npx @vscode/vsce package",
+    "install-local": "npm run vsix 2>&1 && code --install-extension claude-round-files-diff-0.1.0.vsix --force 2>&1"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.4.0"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Claude Round Files Diff",
+      "properties": {
+        "claudeRoundFilesDiff.language": {
+          "type": "string",
+          "enum": ["en", "zh"],
+          "enumDescriptions": [
+            "English",
+            "中文"
+          ],
+          "default": "en",
+          "description": "UI language for the extension"
+        }
+      }
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "claudeRoundFilesDiff",
+          "name": "Claude Code 本轮改动",
+          "type": "tree"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "claude-round-files-diff.showDiff",
+        "title": "Show Diff",
+        "icon": "$(diff)"
+      },
+      {
+        "command": "claude-round-files-diff.refresh",
+        "title": "Refresh Changes",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "claude-round-files-diff.clearHistory",
+        "title": "Clear History",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "claude-round-files-diff.setupHooks",
+        "title": "Claude Round Files Diff: 安装/修复 Hook 配置",
+        "icon": "$(gear)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "claude-round-files-diff.refresh",
+          "when": "view == claudeRoundFilesDiff",
+          "group": "navigation"
+        },
+        {
+          "command": "claude-round-files-diff.clearHistory",
+          "when": "view == claudeRoundFilesDiff",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "claude-round-files-diff.showDiff",
+          "when": "view == claudeRoundFilesDiff && viewItem == changedFile",
+          "group": "inline"
+        }
+      ]
+    }
+  }
+}

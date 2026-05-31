@@ -1,0 +1,9 @@
+node_modules
+*.vsix
+.vscode
+.vscode-test
+.claude
+__pycache__/
+*.pyc
+readme-dev.md
+CLAUDE.md
