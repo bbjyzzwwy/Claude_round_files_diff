@@ -35,4 +35,10 @@
 
 ---
 
+## TODO
+
+- **Windows support** — The extension currently relies on bash scripts and Python hooks designed for Linux. Windows compatibility is planned.
+
+---
+
 **License:** [MIT](https://github.com/bbjyzzwwy/Claude_round_files_diff/blob/master/LICENSE)

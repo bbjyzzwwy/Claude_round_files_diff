@@ -36,4 +36,10 @@
 
 ---
 
+## TODO
+
+- **Windows 支持** — 扩展目前依赖为 Linux 设计的 bash 脚本和 Python hook。计划增加 Windows 兼容。
+
+---
+
 **许可:** [MIT](https://github.com/bbjyzzwwy/Claude_round_files_diff/blob/master/LICENSE)
