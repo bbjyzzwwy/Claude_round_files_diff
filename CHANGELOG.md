@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.1] — 2026-06-01
+
+### Fixed
+
+- **External file tracking**: Claude Code edits to files outside the workspace (e.g., `/etc/config`, other project directories) are now correctly detected and displayed. Previously, the Stop hook filtered out any file not under the project root directory.
+- **Phantom "added" files from Read tool**: Fixed a bug where files read by Claude (via the `Read` tool) were incorrectly reported as newly added files. The diff would show "before = empty, after = actual content" for files that already existed. Root cause: the hook created file entries for any `tool_use` with a `file_path`, not just `Edit`/`Write` operations.
+
+### Added
+
+- **Configurable notification**: New setting `claudeRoundFilesDiff.showNotification` (default: `true`) to control whether a notification popup appears after each Claude Code round.
+
+---
+
 ## [0.1.0] — 2026-05-31
 
 ### Added

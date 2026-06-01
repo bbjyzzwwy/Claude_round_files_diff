@@ -145,10 +145,15 @@ with open(jsonl_path, 'r', errors='replace') as f:
             fp = inp.get('file_path', '')
             if not fp:
                 continue
-            abs_fp = fp if os.path.isabs(fp) else os.path.join(pwd, fp)
-            if not abs_fp.startswith(pwd + os.sep) and abs_fp != pwd:
+            # 只处理 Edit 和 Write，忽略 Read 等其他工具
+            if name not in ('Edit', 'Write'):
                 continue
-            rel_path = os.path.relpath(abs_fp, pwd)
+            abs_fp = fp if os.path.isabs(fp) else os.path.join(pwd, fp)
+            # 项目内文件存相对路径，外部文件存绝对路径
+            if abs_fp.startswith(pwd + os.sep) or abs_fp == pwd:
+                rel_path = os.path.relpath(abs_fp, pwd)
+            else:
+                rel_path = abs_fp
             if rel_path not in files:
                 files[rel_path] = {'edits': [], 'writes': 0}
             if name == 'Edit':
@@ -375,7 +380,9 @@ async function showDiff(item) {
   }
   if (!currentWorkspaceRoot) return;
 
-  const absPath = path.join(currentWorkspaceRoot, item.filePath);
+  const absPath = path.isAbsolute(item.filePath)
+    ? item.filePath
+    : path.join(currentWorkspaceRoot, item.filePath);
 
   if (!fs.existsSync(absPath)) {
     vscode.window.showErrorMessage(
@@ -442,9 +449,17 @@ function loadResult(snapshotsDir) {
     const data = JSON.parse(raw);
     if (data.changedFiles?.length > 0) {
       treeDataProvider.refresh(data);
-      vscode.window.showInformationMessage(
-        t('detectChanged', String(data.changedFiles.length))
-      );
+      const config = vscode.workspace.getConfiguration('claudeRoundFilesDiff');
+      if (config.get('showNotification', true)) {
+        const msg = t('detectChanged', String(data.changedFiles.length));
+        vscode.window.withProgress(
+          { location: vscode.ProgressLocation.Notification, title: msg, cancellable: false },
+          async (progress) => {
+            progress.report({ increment: 0 });
+            await new Promise(resolve => setTimeout(resolve, 3000));
+          }
+        );
+      }
     }
   } catch (e) {
     vscode.window.showErrorMessage(t('readResultFailed', resultFile, e.message));

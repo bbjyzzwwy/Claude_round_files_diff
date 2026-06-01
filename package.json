@@ -2,7 +2,7 @@
   "name": "claude-round-files-diff",
   "displayName": "Claude Round Files Diff",
   "description": "Track files changed by Claude Code in each round — with one-click diff view inside VS Code",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "bbjyzzwwy",
   "author": "bbjyzzwwy",
   "icon": "logo.png",
@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "vsix": "npx @vscode/vsce package",
-    "install-local": "npm run vsix 2>&1 && code --install-extension claude-round-files-diff-0.1.0.vsix --force 2>&1"
+    "install-local": "npm run vsix 2>&1 && code --install-extension claude-round-files-diff-*.vsix --force 2>&1"
   },
   "devDependencies": {
     "@vscode/vsce": "^3.4.0"
@@ -48,6 +48,11 @@
           ],
           "default": "en",
           "description": "UI language for the extension"
+        },
+        "claudeRoundFilesDiff.showNotification": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a notification popup when Claude Code finishes a round"
         }
       }
     },
